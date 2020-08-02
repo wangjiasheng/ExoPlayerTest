@@ -25,22 +25,25 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.view.KeyEvent.ACTION_DOWN;
+import static android.view.KeyEvent.ACTION_UP;
+
 public class MenuActivity extends MainActivity {
     RecyclerView mRecycleView;
+    View contentView;
     List<MovieBean> list=new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ViewGroup viewRoot=findViewById(android.R.id.content);
-        View view= LayoutInflater.from(this).inflate(R.layout.layout_list,null,true);
-        mRecycleView=view.findViewById(R.id.mRecycleView);
+        contentView= LayoutInflater.from(this).inflate(R.layout.layout_list,null,true);
+        mRecycleView=contentView.findViewById(R.id.mRecycleView);
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         ViewGroup viewGroup=((ViewGroup) viewRoot.getChildAt(0));
         viewGroup.getChildCount();
         ViewGroup.LayoutParams params=new ViewGroup.LayoutParams(400, ViewGroup.LayoutParams.MATCH_PARENT);
-        viewGroup.addView(view,2,params);
-        viewGroup.getChildCount();
-
+        viewGroup.addView(contentView,2,params);
+        contentView.setVisibility(View.GONE);
 
         new Thread(){
             @Override
@@ -92,25 +95,17 @@ public class MenuActivity extends MainActivity {
         @Override
         public void onBindViewHolder(@NonNull MyVoidHolder holder, int position) {
             if(position==focusPosition){
-                holder.contentView.setClickable(false);
-                holder.contentView.setFocusableInTouchMode(true);
-                holder.contentView.setFocusable(true);
-                holder.contentView.requestFocus();
+               setFocus(holder.contentView,true);
             }else{
-                holder.contentView.setFocusable(false);
-                holder.contentView.setFocusableInTouchMode(false);
+               setFocus(holder.contentView,false);
             }
             holder.contentView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(loastView!=null){
-                        loastView.setClickable(true);
-                        holder.contentView.setFocusableInTouchMode(false);
+                        setFocus(loastView,false);
                     }
-                    v.setClickable(false);
-                    v.setFocusableInTouchMode(true);
-                    v.setFocusable(true);
-                    v.requestFocus();
+                    setFocus(v,true);
                     focusPosition=position;
                     manager.playerUrl(list.get(position).getUrl());
                 }
@@ -120,6 +115,18 @@ public class MenuActivity extends MainActivity {
         @Override
         public int getItemCount() {
             return list.size();
+        }
+    }
+    public void setFocus(View view,boolean bool){
+        if(bool){
+            view.setClickable(false);
+            view.setFocusableInTouchMode(true);
+            view.setFocusable(true);
+            view.requestFocus();
+        }else{
+            view.setClickable(true);
+            view.setFocusableInTouchMode(false);
+            view.setFocusable(false);
         }
     }
     public class MyVoidHolder extends RecyclerView.ViewHolder{
@@ -160,9 +167,16 @@ public class MenuActivity extends MainActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        switch (event.getAction()){
+        if(ACTION_DOWN == event.getAction()){
+            return true;
+        }
+        switch (event.getKeyCode()){
             case KeyEvent.KEYCODE_MENU:
-                Toast.makeText(MenuActivity.this,"KEYCODE_MENU",Toast.LENGTH_SHORT).show();
+                if(contentView.getVisibility()==View.VISIBLE){
+                    contentView.setVisibility(View.GONE);
+                }else{
+                    contentView.setVisibility(View.VISIBLE);
+                }
                 return true;
         }
         return super.dispatchKeyEvent(event);
