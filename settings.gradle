@@ -1,0 +1,3 @@
+include ':updatelib_incremental'
+include ':app'
+rootProject.name = "ExoPlayeTest"
