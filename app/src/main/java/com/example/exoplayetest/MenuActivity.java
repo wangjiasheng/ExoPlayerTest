@@ -1,6 +1,8 @@
 package com.example.exoplayetest;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +59,11 @@ public class MenuActivity extends MainActivity {
                         Pattern pattern=Pattern.compile("(\\S+)(?=,((http|https)://\\S+\\.m3u8))\\S+");
                         Matcher matcher=pattern.matcher(readStr);
                         if(matcher.matches()){
-                            list.add(new MovieBean(matcher.group(1),matcher.group(2)));
+                            if(list.size()==0) {
+                                list.add(new MovieBean(matcher.group(1), matcher.group(2)));
+                            }else{
+                                list.add(new MovieBean(matcher.group(1), matcher.group(2)));
+                            }
                         }
                     }
 
@@ -74,6 +80,8 @@ public class MenuActivity extends MainActivity {
         }.start();
     }
     public class MyAdapter extends RecyclerView.Adapter<MyVoidHolder>{
+        private int focusPosition=0;
+        private View loastView=null;
         @NonNull
         @Override
         public MyVoidHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -83,6 +91,30 @@ public class MenuActivity extends MainActivity {
         }
         @Override
         public void onBindViewHolder(@NonNull MyVoidHolder holder, int position) {
+            if(position==focusPosition){
+                holder.contentView.setClickable(false);
+                holder.contentView.setFocusableInTouchMode(true);
+                holder.contentView.setFocusable(true);
+                holder.contentView.requestFocus();
+            }else{
+                holder.contentView.setFocusable(false);
+                holder.contentView.setFocusableInTouchMode(false);
+            }
+            holder.contentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(loastView!=null){
+                        loastView.setClickable(true);
+                        holder.contentView.setFocusableInTouchMode(false);
+                    }
+                    v.setClickable(false);
+                    v.setFocusableInTouchMode(true);
+                    v.setFocusable(true);
+                    v.requestFocus();
+                    focusPosition=position;
+                    manager.playerUrl(list.get(position).getUrl());
+                }
+            });
             holder.binData(list.get(position));
         }
         @Override
@@ -92,17 +124,12 @@ public class MenuActivity extends MainActivity {
     }
     public class MyVoidHolder extends RecyclerView.ViewHolder{
         private TextView mTextView;
+        private View contentView;
         public MyVoidHolder(@NonNull View itemView) {
             super(itemView);
+            contentView=itemView;
             mTextView=itemView.findViewById(R.id.mText);
-            mTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position=getAdapterPosition();
-                    Toast.makeText(MenuActivity.this,list.get(position).getUrl(),Toast.LENGTH_SHORT).show();
-                    manager.playerUrl(list.get(position).getUrl());
-                }
-            });
+            mTextView.setTag(itemView);
         }
         public void binData(MovieBean bean){
             mTextView.setText(bean.getName());
@@ -129,5 +156,15 @@ public class MenuActivity extends MainActivity {
         public void setUrl(String url) {
             this.url = url;
         }
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        switch (event.getAction()){
+            case KeyEvent.KEYCODE_MENU:
+                Toast.makeText(MenuActivity.this,"KEYCODE_MENU",Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 }

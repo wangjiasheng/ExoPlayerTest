@@ -8,5 +8,6 @@
     android:textColor="#ffffffff"
     android:gravity="center"
     android:background="@drawable/videoitem"
+    android:focusableInTouchMode="true"
     >
 </TextView>
