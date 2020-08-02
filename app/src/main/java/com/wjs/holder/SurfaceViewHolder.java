@@ -17,59 +17,46 @@ public class SurfaceViewHolder implements SurfaceHolder.Callback {
     private SurfaceView surfaceView;
     private PlayerBase base;
     private PlayerProgressbarListener listener;
-    private SurfaceHolder surfaceHolder;
     public SurfaceViewHolder(Context context,SurfaceView surfaceView, PlayerProgressbarListener listener){
         this.surfaceView=surfaceView;
         this.context=context;
         this.listener=listener;
         surfaceView.getHolder().addCallback(this);
     }
-    public void initPlayer(PlayerBase playerBase,String url){
+    public void initPlayer(PlayerBase playerBase){
         if(playerBase==null){
             return;
         } else if(base!=null){
             base.stop();
-            base.setVideoSurface(null);
             base.release();
         }
         this.base=playerBase;
-        base.initPlayer(context,url,listener);
-        if(surfaceHolder!=null){
-            base.setVideoSurface(surfaceHolder);
-        }
+        base.initPlayer(context,listener);
+
+    }
+    public void playerUrl(String url){
+        base.playUrl(context,url);
+        base.prepare();
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i("wangjiasheng","surfaceCreated"+Thread.currentThread());
-        surfaceHolder=holder;
-        start();
+        base.setVideoSurface(holder);
+        base.start();
+
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.i("wangjiasheng","surfaceChanged");
-        surfaceHolder=holder;
-
-       /* new Thread(){
-            @Override
-            public void run() {
-                Rect rect=new Rect(0,0,width,height);
-               Canvas canvas= holder.lockCanvas(rect);
-               canvas.drawColor(Color.RED);
-               holder.lockCanvas(rect);
-            }
-        }.start();*/
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i("wangjiasheng","surfaceDestroyed");
-        surfaceHolder=null;
-        base.stop();
-        base.setVideoSurface(null);
+        base.pause();
     }
-    public void start(){
-        base.setVideoSurface(surfaceHolder);
-        base.start();
+    public void release(){
+        base.release();
     }
 }

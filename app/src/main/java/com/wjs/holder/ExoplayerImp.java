@@ -32,6 +32,7 @@ public class ExoplayerImp implements PlayerBase{
     private PlayerProgressbarListener listener;
     @Override
     public void stop() {
+        exoPlayer.setVideoSurface(null);
         exoPlayer.setPlayWhenReady(false);
         Log.i("wangjiasheng","ExoPlayer_stop");
     }
@@ -40,11 +41,33 @@ public class ExoplayerImp implements PlayerBase{
     public void start() {
         exoPlayer.setPlayWhenReady(true);
         Log.i("wangjiasheng","ExoPlayer_start");
+    }
 
+
+
+    @Override
+    public void pause() {
+        exoPlayer.setVideoSurface(null);
+        exoPlayer.setPlayWhenReady(false);
+        Log.i("wangjiasheng","ExoPlayer_pause");
+    }
+
+    @Override
+    public void playUrl(Context context,String url) {
+        //exoPlayer.setVideoSurface(null);
+        exoPlayer.setPlayWhenReady(false);
+        exoPlayer.prepare(mHlsMediaSource.getMediaSource2(context,url));
+    }
+
+    @Override
+    public void prepare() {
+        exoPlayer.setPlayWhenReady(true);
+        Log.i("wangjiasheng","ExoPlayer_prepare");
     }
 
     @Override
     public void release() {
+        Log.i("wangjiasheng","ExoPlayer_release");
         exoPlayer.release();
         exoPlayer=null;
         listener=null;
@@ -57,13 +80,11 @@ public class ExoplayerImp implements PlayerBase{
     }
 
     @Override
-    public void initPlayer(Context context,String url,PlayerProgressbarListener listener) {
+    public void initPlayer(Context context,PlayerProgressbarListener listener) {
         Log.i("wangjiasheng","ExoPlayer_initPlayer");
         this.listener=listener;
         exoPlayer=new SimpleExoPlayer.Builder(context.getApplicationContext()).build();
-        exoPlayer.prepare(mHlsMediaSource.getMediaSource2(context,url));
         exoPlayer.addListener(new ExoPlayerrListener());
-        exoPlayer.setPlayWhenReady(true);
     }
     class ExoPlayerrListener implements Player.EventListener {
         @Override
@@ -95,6 +116,9 @@ public class ExoplayerImp implements PlayerBase{
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             Log.i("wangjiasheng","onPlayerError:"+error.getMessage());
+            if(error.getMessage().indexOf("BehindLiveWindowException")>0){
+
+            }
         }
     }
 }

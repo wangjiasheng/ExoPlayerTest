@@ -14,7 +14,6 @@ import com.wjs.upatetask.URLBuilder;
 
 
 public class UpdateActivity extends PlayerActivity {
-    RecyclerView mRecycleView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

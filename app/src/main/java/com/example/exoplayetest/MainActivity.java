@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity implements PlayerProgressbar
     private SurfaceView surfaceView; //播放区
     private ProgressBar mProgressBar;
     public SurfaceViewHolder manager;
-    public PlayerBase playerBase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +25,10 @@ public class MainActivity extends AppCompatActivity implements PlayerProgressbar
         surfaceView = (SurfaceView) findViewById(R.id.surface_view);
         mProgressBar=findViewById(R.id.mProgressBar);
         manager=new SurfaceViewHolder(this,surfaceView,this);
-        playerBase=new ExoplayerImp();
-        manager.initPlayer(playerBase,Constant.ccty1);
+        PlayerBase playerBase1=new MediaPlayerImpl();
+        PlayerBase playerBase2=new ExoplayerImp();
+        manager.initPlayer(playerBase2);
+        manager.playerUrl(Constant.ccty1);
     }
     @Override
     public void showProgressBar() {
@@ -37,5 +38,11 @@ public class MainActivity extends AppCompatActivity implements PlayerProgressbar
     @Override
     public void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        manager.release();
     }
 }

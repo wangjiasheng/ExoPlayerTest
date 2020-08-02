@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MenuActivity extends UpdateActivity {
+public class MenuActivity extends MainActivity {
+    RecyclerView mRecycleView;
     List<MovieBean> list=new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,8 +100,7 @@ public class MenuActivity extends UpdateActivity {
                 public void onClick(View v) {
                     int position=getAdapterPosition();
                     Toast.makeText(MenuActivity.this,list.get(position).getUrl(),Toast.LENGTH_SHORT).show();
-                    // manager.initPlayer(new ExoplayerImp(),UpdateActivity.this.list.get(position).getUrl());
-
+                    manager.playerUrl(list.get(position).getUrl());
                 }
             });
         }
