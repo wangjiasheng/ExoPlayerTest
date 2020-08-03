@@ -83,8 +83,6 @@ public class MenuActivity extends MainActivity {
         }.start();
     }
     public class MyAdapter extends RecyclerView.Adapter<MyVoidHolder>{
-        private int focusPosition=0;
-        private View loastView=null;
         @NonNull
         @Override
         public MyVoidHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -94,19 +92,10 @@ public class MenuActivity extends MainActivity {
         }
         @Override
         public void onBindViewHolder(@NonNull MyVoidHolder holder, int position) {
-            if(position==focusPosition){
-               setFocus(holder.contentView,true);
-            }else{
-               setFocus(holder.contentView,false);
-            }
             holder.contentView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(loastView!=null){
-                        setFocus(loastView,false);
-                    }
-                    setFocus(v,true);
-                    focusPosition=position;
+                    togleButt();
                     manager.playerUrl(list.get(position).getUrl());
                 }
             });
@@ -168,17 +157,23 @@ public class MenuActivity extends MainActivity {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if(ACTION_DOWN == event.getAction()){
-            return true;
-        }
-        switch (event.getKeyCode()){
-            case KeyEvent.KEYCODE_MENU:
-                if(contentView.getVisibility()==View.VISIBLE){
-                    contentView.setVisibility(View.GONE);
-                }else{
-                    contentView.setVisibility(View.VISIBLE);
-                }
-                return true;
+            //return true;
+            switch (event.getKeyCode()){
+                case KeyEvent.KEYCODE_MENU:
+                    togleButt();
+                    return true;
+                case KeyEvent.KEYCODE_BACK:
+                    finish();
+                    break;
+            }
         }
         return super.dispatchKeyEvent(event);
+    }
+    public void togleButt(){
+        if(contentView.getVisibility()==View.VISIBLE){
+            contentView.setVisibility(View.GONE);
+        }else{
+            contentView.setVisibility(View.VISIBLE);
+        }
     }
 }
