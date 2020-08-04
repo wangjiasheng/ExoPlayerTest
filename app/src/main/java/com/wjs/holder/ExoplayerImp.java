@@ -3,24 +3,11 @@ package com.wjs.holder;
 import android.content.Context;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
 
-import com.TestMediaSource;
-import com.example.exoplayetest.MainActivity;
 import com.example.exoplayetest.mHlsMediaSource;
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.analytics.AnalyticsCollector;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.util.Clock;
-import com.google.android.exoplayer2.util.Util;
-
-import java.lang.reflect.Field;
 
 import static com.google.android.exoplayer2.Player.STATE_BUFFERING;
 import static com.google.android.exoplayer2.Player.STATE_ENDED;

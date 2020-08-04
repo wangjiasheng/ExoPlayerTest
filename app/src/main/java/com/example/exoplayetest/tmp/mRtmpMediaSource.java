@@ -1,7 +1,8 @@
-package com.example.exoplayetest;
+package com.example.exoplayetest.tmp;
 
 import android.net.Uri;
 
+import com.example.exoplayetest.Constant;
 import com.google.android.exoplayer2.ext.rtmp.RtmpDataSource;
 import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
 import com.google.android.exoplayer2.source.MediaSource;

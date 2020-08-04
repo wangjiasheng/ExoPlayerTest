@@ -1,4 +1,4 @@
-package com.example.exoplayetest;
+package com.example.exoplayetest.tmp;
 
 import android.content.Context;
 import android.net.Uri;
