@@ -1,13 +1,11 @@
 package com.example.exoplayetest;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +24,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.view.KeyEvent.ACTION_DOWN;
-import static android.view.KeyEvent.ACTION_UP;
 
 public class MenuActivity extends MainActivity {
     RecyclerView mRecycleView;
@@ -40,7 +37,6 @@ public class MenuActivity extends MainActivity {
         mRecycleView=contentView.findViewById(R.id.mRecycleView);
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         ViewGroup viewGroup=((ViewGroup) viewRoot.getChildAt(0));
-        viewGroup.getChildCount();
         ViewGroup.LayoutParams params=new ViewGroup.LayoutParams(400, ViewGroup.LayoutParams.MATCH_PARENT);
         viewGroup.addView(contentView,2,params);
         contentView.setVisibility(View.GONE);
@@ -95,7 +91,7 @@ public class MenuActivity extends MainActivity {
             holder.contentView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    togleButt();
+                    toggleButton();
                     manager.playerUrl(list.get(position).getUrl());
                 }
             });
@@ -157,10 +153,9 @@ public class MenuActivity extends MainActivity {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if(ACTION_DOWN == event.getAction()){
-            //return true;
             switch (event.getKeyCode()){
                 case KeyEvent.KEYCODE_MENU:
-                    togleButt();
+                    toggleButton();
                     return true;
                 case KeyEvent.KEYCODE_BACK:
                     finish();
@@ -169,7 +164,11 @@ public class MenuActivity extends MainActivity {
         }
         return super.dispatchKeyEvent(event);
     }
-    public void togleButt(){
+
+    /**
+     * 切换Menu显示状态
+     */
+    public void toggleButton(){
         if(contentView.getVisibility()==View.VISIBLE){
             contentView.setVisibility(View.GONE);
         }else{

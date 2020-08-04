@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements PlayerProgressbar
         manager=new SurfaceViewHolder(this,surfaceView,this);
         PlayerBase playerBase1=new MediaPlayerImpl();
         PlayerBase playerBase2=new ExoplayerImp();
-        manager.initPlayer(playerBase2);
+        manager.initPlayer(playerBase1);
         manager.playerUrl(Constant.ccty1);
     }
     @Override
