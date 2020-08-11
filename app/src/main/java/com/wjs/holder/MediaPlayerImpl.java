@@ -10,7 +10,7 @@ import com.example.exoplayetest.Constant;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-                public class MediaPlayerImpl implements PlayerBase {
+public class MediaPlayerImpl implements PlayerBase {
     public static final int IDEL=10001;
     public static final int Initialized=10002;
     public static final int Prepared=10003;
