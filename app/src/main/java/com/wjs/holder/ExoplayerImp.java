@@ -9,12 +9,14 @@ import android.view.View;
 import com.TestMediaSource;
 import com.example.exoplayetest.MainActivity;
 import com.example.exoplayetest.mHlsMediaSource;
+import com.example.exoplayetest.mRtmpMediaSource;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsCollector;
+import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.Clock;
@@ -56,7 +58,9 @@ public class ExoplayerImp implements PlayerBase{
     public void playUrl(Context context,String url) {
         //exoPlayer.setVideoSurface(null);
         exoPlayer.setPlayWhenReady(false);
-        exoPlayer.prepare(mHlsMediaSource.getMediaSource2(context,url));
+        //mHlsMediaSource.getMediaSource2(context,url)
+        MediaSource source=mRtmpMediaSource.getMediaSource();
+        exoPlayer.prepare(source);
     }
 
     @Override
