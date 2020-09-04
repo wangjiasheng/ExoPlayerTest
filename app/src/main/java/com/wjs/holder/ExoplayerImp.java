@@ -4,10 +4,12 @@ import android.content.Context;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import com.example.exoplayetest.mHlsMediaSource;
+import com.example.exoplayetest.tmp.mRtmpMediaSource;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+
 
 import static com.google.android.exoplayer2.Player.STATE_BUFFERING;
 import static com.google.android.exoplayer2.Player.STATE_ENDED;
@@ -43,7 +45,9 @@ public class ExoplayerImp implements PlayerBase{
     public void playUrl(Context context,String url) {
         //exoPlayer.setVideoSurface(null);
         exoPlayer.setPlayWhenReady(false);
-        exoPlayer.prepare(mHlsMediaSource.getMediaSource2(context,url));
+        //mHlsMediaSource.getMediaSource2(context,url)
+        MediaSource source= mRtmpMediaSource.getMediaSource();
+        exoPlayer.prepare(source);
     }
 
     @Override
